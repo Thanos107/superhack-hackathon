@@ -19,6 +19,15 @@ function fetchMarketId(poolProviderContract: Readonly<ContractOptions<[]>>) {
   console.log(data);
 }
 
+function fetchPendingLtv(poolProviderContract: Readonly<ContractOptions<[]>>) {
+  const { data, isLoading } = useReadContract({
+    contract: poolProviderContract,
+    method: "function getPendingLtv(address asset) external view returns (uint256)",
+    params: ["0x64b761D848206f447Fe2dd461b0c635Ec39EbB27"],
+  });
+  console.log(data);
+}
+
 const DefiContract = () => {
   const client = createThirdwebClient({ clientId: "b4acdc244febe029528f057064473fc0" });
 
@@ -33,11 +42,7 @@ const DefiContract = () => {
   // AAVE pool address ethereum: 0x2f39d218133AFaB8F2B819B1066c7E434Ad94E9e
   // AAVE usdc ethereum: 0x64b761D848206f447Fe2dd461b0c635Ec39EbB27
   // AAVE usdc optimism: 0x625E7708f30cA75bfd92586e17077590C60eb4cD
-  // const { data, isLoading } = useReadContract({
-  //   contract,
-  //   method: "function getPendingLtv(address asset) external view returns (uint256)",
-  //   params: ["0x625E7708f30cA75bfd92586e17077590C60eb4cD"],
-  // });
+  
 
   // console.log(data);
 
@@ -49,7 +54,16 @@ const DefiContract = () => {
     chain: ethereum,
   });
 
-   fetchMarketId(poolProviderContract);
+    fetchMarketId(poolProviderContract);
+
+    const poolConfiguratorContract = getContract({
+      client,
+      address: "0x64b761D848206f447Fe2dd461b0c635Ec39EbB27",
+      chain: ethereum,
+    
+    })
+
+  fetchPendingLtv(poolConfiguratorContract);
 
 
   // Event listening
