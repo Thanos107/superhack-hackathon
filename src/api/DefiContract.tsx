@@ -1,4 +1,4 @@
-import { getContract } from "thirdweb";
+import { ContractOptions, getContract } from "thirdweb";
 import { ethereum, optimism } from "thirdweb/chains";
 import { useReadContract } from "thirdweb/react";
 import { createThirdwebClient } from "thirdweb";
@@ -8,6 +8,16 @@ import { prepareEvent } from "thirdweb";
 import { useEffect } from "react";
 import { Contract } from "ethers";
 import { ethers } from "ethers";
+
+function fetchMarketId(poolProviderContract: Readonly<ContractOptions<[]>>) {
+  const {data, isLoading} = useReadContract({
+    contract: poolProviderContract,
+    method: "function getMarketId() external view returns (string memory)",
+    params: [],
+  })
+
+  console.log(data);
+}
 
 const DefiContract = () => {
   const client = createThirdwebClient({ clientId: "b4acdc244febe029528f057064473fc0" });
@@ -39,11 +49,7 @@ const DefiContract = () => {
     chain: ethereum,
   });
 
-  // const {data, isLoading} = useReadContract({
-  //   contract: poolProviderContract,
-  //   method: "function getMarketId() external view returns (string memory)",
-  //   params: [],
-  // })
+   fetchMarketId(poolProviderContract);
 
 
   // Event listening
